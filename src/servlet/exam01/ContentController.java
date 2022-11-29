@@ -1,9 +1,6 @@
-package servlet;
+package servlet.exam01;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,14 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dto.Board;
-
-@WebServlet(value="/Exam01Controller", loadOnStartup=1)
-public class Exam01Controller extends HttpServlet {
+@WebServlet(name="exam01.ContentController", urlPatterns="/exam01/ContentController")
+public class ContentController extends HttpServlet {
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("Exam01Controller.init() 실행");
+		System.out.println("ContentController.init() 실행");
 	}
 	
 	@Override
@@ -32,7 +27,7 @@ public class Exam01Controller extends HttpServlet {
 	
 	@Override
 	public void destroy() {
-		System.out.println("Exam01Controller.distroy() 실행");
+		System.out.println("ContentController.distroy() 실행");
 	}
 
 }
