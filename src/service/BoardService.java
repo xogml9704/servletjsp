@@ -1,12 +1,14 @@
 package service;
 
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 import dao.BoardDao;
 import dto.Board;
+import util.Pager;
 
 public class BoardService {
 	private ServletContext application;
@@ -48,6 +50,34 @@ public class BoardService {
 		try {
 			conn = ds.getConnection();
 			result = boardDao.countRows(conn);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { conn.close(); } catch(Exception e) {}
+		}
+		return result;
+	}
+
+	public List<Board> getPageList(Pager pager) {
+		List<Board> result = null;
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+			result = boardDao.selectPageList(pager, conn);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { conn.close(); } catch(Exception e) {}
+		}
+		return result;
+	}
+
+	public Board getBoard(int bno) {
+		Board result = null;
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+			result = boardDao.selectBoard(bno, conn);
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

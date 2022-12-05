@@ -3,8 +3,11 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.Board;
+import util.Pager;
 
 public class BoardDao {
 	
@@ -38,6 +41,64 @@ public class BoardDao {
 		int result = rs.getInt(1);
 		rs.close();
 		pstmt.close();
+		return result;
+	}
+
+	public List<Board> selectPageList(Pager pager, Connection conn) throws Exception {
+		List<Board> result = new ArrayList<>();
+		String sql = "";
+		sql += "SELECT RNUM, bno, btitle, bcontent, bwriter, bdate, bhitcount ";
+		sql += "FROM ( ";
+		sql += "   SELECT ROWNUM AS rnum, bno, btitle, bcontent, bwriter, bdate, bhitcount ";
+		sql += "   FROM ( ";
+		sql += "        SELECT bno, btitle, bcontent, bwriter, bdate, bhitcount ";
+		sql += "        FROM boards2 ";
+		sql += "        ORDER BY bno DESC ";
+		sql += "    ) WHERE ROWNUM <= ? ";
+		sql += ") WHERE RNUM >= ? ";
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, pager.getPageNo() * pager.getRowsPerPage());
+		pstmt.setInt(2, (pager.getPageNo() -1) * pager.getRowsPerPage() + 1);
+		ResultSet rs = pstmt.executeQuery();
+		while(rs.next()) {
+			Board board = new Board();
+			board.setBno(rs.getInt("bno"));
+			board.setBtitle(rs.getString("btitle"));
+			board.setBcontent(rs.getString("bcontent"));
+			board.setBwriter(rs.getString("bwriter"));
+			board.setBhitcount(rs.getInt("bhitcount"));
+			board.setBdate(rs.getDate("bdate"));
+			result.add(board);
+		}
+		rs.close();
+		pstmt.close();
+		
+		return result;
+	}
+
+	public Board selectBoard(int bno, Connection conn) throws Exception {
+		Board result = null;
+
+		String sql = "select bno, btitle, bcontent, bwriter, bdate, bhitcount, bfilename, bsavedname, bfiletype from boards2 where bno=?";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		pstmt.setInt(1, bno);
+		ResultSet rs = pstmt.executeQuery();
+		if (rs.next()) {
+			result = new Board();
+			result.setBno(rs.getInt("bno"));
+			result.setBtitle(rs.getString("btitle"));
+			result.setBcontent(rs.getString("bcontent"));
+			result.setBwriter(rs.getString("bwriter"));
+			result.setBhitcount(rs.getInt("bhitcount"));
+			result.setBdate(rs.getDate("bdate"));
+			result.setBfileName(rs.getString("bfilename"));
+			result.setBsavedName(rs.getString("bsavedname"));
+			result.setBfileType(rs.getString("bfiletype"));
+		}
+		rs.close();
+		pstmt.close();
+
 		return result;
 	}
 }

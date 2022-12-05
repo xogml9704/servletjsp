@@ -22,26 +22,39 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
+				<c:forEach var="board" items="${pageList}">
+					<tr>
+						<td>${board.bno}</td>
+						<td><a href="DetailViewController?bno=${board.bno}">${board.btitle}</a></td>
+						<td>${board.bcontent}</td>
+						<td>${board.bwriter}</td>
+						<td>${board.bhitcount}</td>
+						<td><fmt:formatDate value="${board.bdate}" pattern="yyyy.MM.dd"/></td>
+					</tr>
+				</c:forEach>
 				<tr>
 					<td colspan="6" class="text-center">
 						<div>
-							<a href="#" class="btn btn-outline-primary btn-sm">처음</a>
-							<a href="#" class="btn btn-outline-info btn-sm">이전</a>
-							<a href="#" class="btn btn-outline-success btn-sm">1</a>
-							<a href="#" class="btn btn-danger btn-sm">2</a>
-							<a href="#" class="btn btn-outline-success btn-sm">3</a>
-							<a href="#" class="btn btn-outline-success btn-sm">4</a>
-							<a href="#" class="btn btn-outline-success btn-sm">5</a>
-							<a href="#" class="btn btn-outline-info btn-sm">다음</a>
-							<a href="#" class="btn btn-outline-primary btn-sm">맨끝</a>
+							<a href="ContentController?pageNo=1" class="btn btn-outline-primary btn-sm">처음</a>
+							
+							<c:if test="${pager.groupNo > 1}">
+								<a href="ContentController?pageNo=${pager.startPageNo-1}" class="btn btn-outline-info btn-sm">이전</a>
+							</c:if>
+							
+							<c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
+								<c:if test="${pager.pageNo != i}">
+									<a href="ContentController?pageNo=${i}" class="btn btn-outline-success btn-sm">${i}</a>
+								</c:if>
+								<c:if test="${pager.pageNo == i}">
+									<a href="ContentController?pageNo=${i}" class="btn btn-danger btn-sm">${i}</a>
+								</c:if>
+							</c:forEach>
+							
+							<c:if test="${pager.groupNo < pager.totalGroupNo}">
+								<a href="ContentController?pageNo=${pager.endPageNo+1}" class="btn btn-outline-info btn-sm">다음</a>
+							</c:if>
+							
+							<a href="ContentController?pageNo=${pager.totalPageNo}" class="btn btn-outline-primary btn-sm">맨끝</a>
 						</div>
 					</td>
 				</tr>
