@@ -50,12 +50,27 @@
 					<span class="title">내용:</span> <br />
 					<textarea style="width: 100%" readonly>${board.bcontent}</textarea>
 				</div>
-
-				<a class="btn btn-info btn-sm mt-2" href="ContentController">목록</a> 
-				<a class="btn btn-info btn-sm mt-2" href="UpdateController?bno=${board.bno}">수정</a> 
-				<a class="btn btn-info btn-sm mt-2" href="DeleteController?bno=${board.bno}">삭제</a>
 			</div>
 		</div>
+		<form method="post" action="UpdateController?bno=${board.bno}" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="btitle">Title</label> 
+				<input type="text" class="form-control" id="btitle" name="btitle">
+			</div>
+			<div class="form-group">
+				<label for="bcontent">Content</label> 
+				<textarea rows="5" cols="50" id="bcontent" name="bcontent" class="form-control"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="bwriter">Writer</label> 
+				<input type="text" class="form-control" id="bwriter" name="bwriter">
+			</div>
+			<div class="form-group">
+				<label for="battach">Attach</label> 
+				<input type="file" class="form-control" id="battach" name="battach">
+			</div>
+			<button type="submit" class="btn btn-info btn-sm">게시물 수정</button>
+		</form>
 	</div>
 </div>
 

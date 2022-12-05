@@ -101,4 +101,23 @@ public class BoardDao {
 
 		return result;
 	}
+
+	public int updateBoard(Board board, Connection conn) throws Exception {
+		String sql = "update boards2 set btitle=?, bcontent=?, bwriter=?, bhitcount=0, bdate=sysdate, bfilename=?, bsavedname=?, bfiletype=? WHERE bno=? ";
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		
+		pstmt.setString(1, board.getBtitle());
+		pstmt.setString(2, board.getBcontent());
+		pstmt.setString(3, board.getBwriter());
+		pstmt.setString(4, board.getBfileName());
+		pstmt.setString(5, board.getBsavedName());
+		pstmt.setString(6, board.getBfileType());
+		pstmt.setInt(7, board.getBno());
+		
+		int rows = pstmt.executeUpdate();
+		pstmt.close();
+		
+		return rows;
+	}
+	
 }

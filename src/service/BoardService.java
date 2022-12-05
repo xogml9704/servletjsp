@@ -86,4 +86,19 @@ public class BoardService {
 		return result;
 	}
 
+	public int updatePage(Board board) {
+		int result = 0;
+		Connection conn = null;
+		try {
+			conn = ds.getConnection();
+			result = boardDao.updateBoard(board, conn);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try { conn.close(); } catch(Exception e) {}
+		}
+		return result;
+		
+	}
+
 }

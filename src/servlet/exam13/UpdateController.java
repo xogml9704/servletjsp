@@ -14,13 +14,20 @@ import javax.servlet.http.Part;
 import dto.Board;
 import service.BoardService;
 
-@WebServlet(name="exam13.WriteController", urlPatterns="/exam13/WriteController")
+@WebServlet(name="exam13.UpdateController", urlPatterns="/exam13/UpdateController")
 @MultipartConfig(maxFileSize=1024*1024*10, maxRequestSize=1024*1024*20)
-public class WriteController extends HttpServlet {
+public class UpdateController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/exam13/writeForm.jsp").forward(request, response);
+		int bno = Integer.parseInt(request.getParameter("bno"));
+		
+		BoardService boardService = (BoardService) request.getServletContext().getAttribute("boardService");
+		Board board = boardService.getBoard(bno);
+		
+		request.setAttribute("board", board);
+		
+		request.getRequestDispatcher("/WEB-INF/views/exam13/updateForm.jsp").forward(request, response);
 	}
 	
 	@Override
@@ -34,6 +41,7 @@ public class WriteController extends HttpServlet {
 		board.setBtitle(request.getParameter("btitle"));
 		board.setBcontent(request.getParameter("bcontent"));
 		board.setBwriter(request.getParameter("bwriter"));
+		board.setBno(Integer.parseInt(request.getParameter("bno")));
 		
 		// 파일 파트
 		Part filePart = request.getPart("battach");
@@ -50,9 +58,8 @@ public class WriteController extends HttpServlet {
 			filePart.write(filePath);
 		}
 		
-		boardService.write2(board);
+		boardService.updatePage(board);
 		
 		response.sendRedirect("ContentController");
 	}
-	
 }
