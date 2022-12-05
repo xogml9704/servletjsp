@@ -11,12 +11,10 @@ import dto.Board;
 import util.Pager;
 
 public class BoardService {
-	private ServletContext application;
 	private DataSource ds;
 	private BoardDao boardDao;
 	
 	public BoardService(ServletContext application) {
-		this.application = application;
 		boardDao = (BoardDao) application.getAttribute("boardDao");
 		ds = (DataSource) application.getAttribute("dataSource");
 //		try {
