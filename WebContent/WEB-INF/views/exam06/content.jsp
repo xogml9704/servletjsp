@@ -11,7 +11,7 @@
       <a href="${pageContext.request.contextPath}/exam06/UseCookieController" class="btn btn-warning btn-sm">쿠키 사용</a>
       
       <hr/>
-      <button class="btn btn-info btn-sm" onclick="readCookie()"></button>
+      <button class="btn btn-info btn-sm" onclick="readCookie()">쿠키 읽기</button>
       <script>
       	function readCookie() {
 			console.log(document.cookie);
